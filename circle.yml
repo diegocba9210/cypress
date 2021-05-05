@@ -287,26 +287,23 @@ commands:
             nvm alias default
             node --version
 
-  install-latest-chrome:
-    description: Install latest Google Chrome (stable)
+  install-chrome:
+    description: Install Google Chrome
     parameters:
-      browser:
-        default: "electron"
-        description: browser shortname to target
+      channel:
+        description: browser channel to install
         type: string
     steps:
       - run:
-          name: Install latest Google Chrome (stable)
+          name: Install Google Chrome (<<parameters.channel>>)
           command: |
-            if [ <<parameters.browser>> == "chrome" ]; then
-              echo "**** Running Chrome tests.  Installing latest stable version of Google Chrome. ****"
-              apt-get update
-              apt-get install google-chrome-stable -y
-              echo "**** Location of Google Chrome Installation: "`which google-chrome`" ****"
-              echo "**** Google Chrome Version: "`google-chrome --version`" ****"
-            else
-              echo "**** Not updating Chrome. Running tests in '<<parameters.browser>>' ****"
-            fi
+            echo "Installing Chrome (<<parameters.channel>>) v$(node ./scripts/get-chrome-version <<parameters.channel>>)"
+            wget -O /usr/src/google-chrome-stable_current_amd64.deb "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-<<parameters.channel>>_${$(node ./scripts/get-chrome-version <<parameters.channel>>)}-1_amd64.deb" && \
+            dpkg -i /usr/src/google-chrome-stable_current_amd64.deb ; \
+            apt-get install -f -y && \
+            rm -f /usr/src/google-chrome-stable_current_amd64.deb
+            echo "Location of Google Chrome Installation: `which google-chrome`"
+            echo "Google Chrome Version: `google-chrome --version`"
 
   run-driver-integration-tests:
     parameters:
@@ -1124,6 +1121,17 @@ jobs:
     <<: *defaults
     parallelism: 5
     steps:
+      - install-chrome:
+          channel: stable
+      - run-driver-integration-tests:
+          browser: chrome
+
+  driver-integration-tests-chrome-beta:
+    <<: *defaults
+    parallelism: 5
+    steps:
+      - install-chrome:
+          channel: beta
       - run-driver-integration-tests:
           browser: chrome
 
@@ -1897,6 +1905,9 @@ linux-workflow: &linux-workflow
         requires:
           - build
     - driver-integration-tests-chrome:
+        requires:
+          - build
+    - driver-integration-tests-chrome-beta:
         requires:
           - build
     - driver-integration-tests-firefox:

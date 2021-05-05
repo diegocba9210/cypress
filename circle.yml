@@ -297,7 +297,7 @@ commands:
       - run:
           name: Install Google Chrome (<<parameters.channel>>)
           command: |
-            echo "Installing Chrome (<<parameters.channel>>) v$(node ./scripts/get-chrome-version <<parameters.channel>>)"
+            echo "Installing Chrome (<<parameters.channel>>) v$(node ./scripts/get-browser-version chrome:<<parameters.channel>>)"
             wget -O /usr/src/google-chrome-stable_current_amd64.deb "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-<<parameters.channel>>_${$(node ./scripts/get-chrome-version <<parameters.channel>>)}-1_amd64.deb" && \
             dpkg -i /usr/src/google-chrome-stable_current_amd64.deb ; \
             apt-get install -f -y && \

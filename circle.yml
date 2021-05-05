@@ -315,7 +315,7 @@ commands:
       - when:
           condition: <<parameters.install-chrome-channel>>
           steps:
-            - install-chrome
+            - install-chrome:
                 channel: <<parameters.install-chrome-channel>>
       - run:
           environment:

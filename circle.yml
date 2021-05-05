@@ -310,6 +310,9 @@ commands:
       browser:
         description: browser shortname to target
         type: string
+      install-chrome-channel:
+        description: chrome channel to install
+        type: string
     steps:
       - restore_cached_workspace
       - when:

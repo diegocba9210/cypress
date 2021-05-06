@@ -1138,7 +1138,7 @@ jobs:
     parallelism: 5
     steps:
       - run-driver-integration-tests:
-          browser: chrome
+          browser: chrome:beta
           install-chrome-channel: beta
 
   driver-integration-tests-firefox:

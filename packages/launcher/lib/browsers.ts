@@ -26,7 +26,7 @@ export const browsers: Browser[] = [
     family: 'chromium',
     channel: 'beta',
     displayName: 'Chrome Beta',
-    versionRegex: /Google Chrome Beta (\S+)/m,
+    versionRegex: /Google Chrome (\S+) beta/m,
     binary: 'google-chrome-beta',
   },
   {

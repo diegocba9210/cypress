@@ -2146,20 +2146,6 @@ linux-workflow: &linux-workflow
         requires:
           - create-build-artifacts
 
-simple-linux-workflow: &simple-linux-workflow
-  jobs:
-    - node_modules_install:
-        arch: 'linux'
-    - build:
-        requires:
-          - node_modules_install
-    - driver-integration-tests-chrome:
-        requires:
-          - build
-    - driver-integration-tests-chrome-beta:
-        requires:
-          - build
-
 mac-workflow: &mac-workflow
   jobs:
     - node_modules_install:
@@ -2236,6 +2222,6 @@ mac-workflow: &mac-workflow
 
 workflows:
   linux:
-    <<: *simple-linux-workflow
-  # mac:
-  #   <<: *mac-workflow
+    <<: *linux-workflow
+  mac:
+    <<: *mac-workflow

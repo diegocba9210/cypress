@@ -316,6 +316,7 @@ commands:
       install-chrome-channel:
         description: chrome channel to install
         type: string
+        default: ''
     steps:
       - restore_cached_workspace
       - when:
